@@ -107,7 +107,7 @@ var Animations = function(carousel) {
 
     function animationRepeat() {
         var currentTime = Date.now() - startTime;
-
+        
         if (options.left_sided) {
         	_this.currentLandPos = clamp( -(vars.allSlidesWidth - slides.parent().width()), 0, _this.currentLandPos);
         }
@@ -241,7 +241,7 @@ module.exports = {
         _this.nav = nav;
 
         element.translate3d(0);
-        anim.gotoSlideByIndex(_this.options.start);
+        anim.gotoSlideByIndex(parseInt(_this.options.start));
 
         //Check if scroll has been enabled
         if (!_this.options.disable_scroll) {
@@ -293,8 +293,8 @@ module.exports = {
             slides.gotoSlide(vars.currentIndex);
         };
 
-        slides.addSlide = function (data) {
-            slides.append("<li>" + data + "</li>");
+        slides.addSlide = function ($element) {
+            slides.append($element);
 
             // Refresh events
             carousel.nav.createEvents();
@@ -322,6 +322,11 @@ module.exports = {
         // Get index of a slide given a position on carousel
         slides.getIndexByPosition = function(x) {
             return carousel.anim.getLandingSlideIndex(-x);
+        };
+
+        // SET Methods
+        slides.setOption = function(key, option) {
+            return carousel.options[key] = option;
         };
     }
 };
@@ -485,9 +490,7 @@ var Navigation = function (carousel, anim) {
 
 
         //Turn on mousemove event when mousedown
-        $(window).on('mousemove touchmove', function (e) {
-            mousemove(e)
-        }); //When mousedown start the handler for mousemove event
+        $(window).on('mousemove touchmove', mousemove); //When mousedown start the handler for mousemove event
 
         // Clear selections so they wont affect sliding
         clearSelections();
@@ -623,7 +626,7 @@ var Navigation = function (carousel, anim) {
             else
                 touch = e;
 
-            $(window).off('mousemove touchmove'); //Stop listening for the mousemove event
+            $(window).off('mousemove touchmove', mousemove); //Stop listening for the mousemove event
 
 
             //Check if vertical panning (swipe out) or horizontal panning (carousel swipe)

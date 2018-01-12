@@ -37,8 +37,8 @@ module.exports = {
             slides.gotoSlide(vars.currentIndex);
         };
 
-        slides.addSlide = function (data) {
-            slides.append("<li>" + data + "</li>");
+        slides.addSlide = function ($element) {
+            slides.append($element);
 
             // Refresh events
             carousel.nav.createEvents();
@@ -66,6 +66,11 @@ module.exports = {
         // Get index of a slide given a position on carousel
         slides.getIndexByPosition = function(x) {
             return carousel.anim.getLandingSlideIndex(-x);
+        };
+
+        // SET Methods
+        slides.setOption = function(key, option) {
+            return carousel.options[key] = option;
         };
     }
 };
